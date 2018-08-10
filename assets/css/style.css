@@ -6,3 +6,36 @@
 .selected-answer {
     border: black 1px dashed;
 }
+
+.responder, .current-score, .question-stats {
+
+    margin-top: 25px;
+    height: 100px;
+    margin-bottom: 25px;
+}
+
+.responder {
+   text-align: center;
+   font-size: 20px;
+   font-weight: bolder;
+   
+}
+
+#time-left {
+    height: 300px;
+    font-size: 40px;
+    font-weight: bold;
+    color: lightgray;
+    padding: 30px;
+}
+
+#question {
+    font-size: 30px;
+    font-weight: bolder;
+
+}
+
+#a, #b, #c, #d {
+    font-size: 22px;
+    padding: 5px;
+}

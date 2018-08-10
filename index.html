@@ -13,7 +13,12 @@
   <body>
 
     <header>
-        <h1>Space Trivia</h1>
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">
+              <img src="" width="30" height="30" class="d-inline-block align-top" alt="">
+              Space Trivia
+            </a>
+          </nav>
     </header>
     
   <div class="container">
@@ -22,20 +27,35 @@
           
           <!-- feedback column -->
             <div class="col-md-6">
-              <p id="feedback"></p>
+              <div class="card responder">
+                <div class="card-body">
+                  <p id="feedback"></p>
+                </div>
+
+              </div>
             </div>
             <!-- immediate scores column -->
             <div class="col-md-3">
+              <div class="card current-score">
+                <div class="card-body">
                 <p id="qCorrect"></p>
                 <p id="qWrong"></p>
                 <p id="pctCorrect"></p>
+              </div>
+            </div>
             </div>
             <!-- question status column -->
             <div class="col-md-3">
-                <p id="qTotal"></p>
-                <p id="qLeft"></p>
+              <div class="card question-stats">
+                <div class="card-body">
+                  <p id="qTotal"></p>
+                  <p id="qLeft"></p>
+                </div>
+              </div>
             </div>
-          </div>
+
+        </div>
+         
 
 
             
@@ -45,26 +65,35 @@
 
           <!-- time left column -->
         <div class="col-lg-2">
+          <div class="card timer-box">
+            <div class="card-body">
               <div id="time-left"></div>
+            </div>
+          </div>
         </div>
 
             <!-- questions and answers column -->
         <div class="col-lg-10">
+          <div class="card question-box">
+            <div class="card-body">
 
             <div id="question"></div>
-
-            <div>
+          </div>
+          </div>
+            <div class="card answer-set">
+              <div class="card-body">
                 <p id="a"></p>
                 <p id="b"></p>
                 <p id="c"></p>
                 <p id="d"></p>
+              </div>
             </div>
         </div>
 
     </div>
 
-  </div>
-
+ 
+</div>
 
 
 

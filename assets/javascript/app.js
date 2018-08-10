@@ -104,23 +104,25 @@ function makeQuestion(){
 
 $("#a").on("click", function(){
   userAnswer = "a";
+  $("#a").addClass("selected-answer");
   unClickAs();
   clearInterval(stopLong);
-  $("#a").addClass("selected-answer");
   $("#time-left").empty();
   scoreAnswer();
 });
 
 $("#b").on("click", function(){
   userAnswer = "b";
-  unClickAs();
   $("#b").addClass("selected-answer");
+  unClickAs();
   clearInterval(stopLong);
+  $("#b").addClass("selected-answer");
   $("#time-left").empty();
   scoreAnswer();
 });
 $("#c").on("click", function(){
   userAnswer = "c";
+  $("#c").addClass("selected-answer");
   unClickAs();
   clearInterval(stopLong);
   $("#time-left").empty();
@@ -128,6 +130,7 @@ $("#c").on("click", function(){
 });
 $("#d").on("click", function(){
   userAnswer = "d";
+  $("#d").addClass("selected-answer");
   unClickAs();
   clearInterval(stopLong);
   $("#time-left").empty();
@@ -203,6 +206,7 @@ $("#d").empty().removeClass("selected-answer right-answer");
 
 qIndex++;
 
+$(".feedback").empty();
 makeQuestion();
 
 
@@ -223,7 +227,7 @@ makeQuestion();
       var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
         
       if(seconds > 0){
-        $("#time-left").html("<h2>" + seconds + "</h2>");
+        $("#time-left").html(seconds);
       }
         // the count down is finished
         if (timeLeft < 1) {
@@ -231,7 +235,7 @@ makeQuestion();
           //question time is up
          // qRun = false;
           //$("#time-left").html("<h2>Times UP!</h2>");
-          $("#time-left").html("<h2>0</h2>");
+          $("#time-left").html("0");
           $(".feedback").text("Sorry!").attr("color", "red");
       
           scoreAnswer();
