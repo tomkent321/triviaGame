@@ -141,9 +141,9 @@ $("#d").on("click", function(){
   $("#feedback").text("Correct!   ----  Press any key for next question").attr("color", "green");
   $("#qCorrect").text("Questions Right: " + sumCorrect + " "); 
   
-  // document.onkeypress=function(e){
-  //   updateAndNextQuestion();
-  // }
+  document.onkeypress=function(e){
+    updateAndNextQuestion();
+  }
 
   } else {
     //wrong answer
@@ -158,13 +158,13 @@ $("#d").on("click", function(){
     
     $("#qWrong").text("Questions Wrong: " + sumWrong + " ");
 
-    // document.onkeypress=function(e){
-    //   updateAndNextQuestion();
-    // }
+    document.onkeypress=function(e){
+      updateAndNextQuestion();
+    }
   }
-  document.onkeypress=function(e){
-    updateAndNextQuestion();
-  }
+  // document.onkeypress=function(e){
+  //   updateAndNextQuestion();
+  // }
 
 
     numQLeft--;
@@ -187,7 +187,7 @@ $("#d").empty().removeClass("selected-answer right-answer");
 
 qIndex++;
 
-$(".feedback").empty();
+$("#feedback").empty();
 makeQuestion();
 
 
