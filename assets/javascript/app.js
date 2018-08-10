@@ -4,8 +4,18 @@ $(document).ready(function(){
 //Set up variables and arrays
 
 var arrQA= [    {q: "How many moons does Mars have?" , a: "Two", b: "Three", c: "Four", d: "It doesn't have any moons", r: "a" },
-                {q: "What speed does the 'C' in emc2 stand for?", a: "Two", b: "Three", c: "Four", d: "It doesn't have any moons", r: "c" },
-                {q: "What does the 'M' in 'emc2' stand for?", a: "Two", b: "Three", c: "Four", d: "It doesn't have any moons", r: "d" }
+                {q: "What speed does the 'c' in emc2 stand for?", a: "carbon", b: "center", c: "light", d: "energy", r: "c" },
+                {q: "What does the 'm' in 'emc2' stand for?", a: "more", b: "matter", c: "metal", d: "master", r: "b" },
+                {q: "Which planet is closest to the sun in January?", a: "earth", b: "mars", c: "jupiter", d: "mercury", r: "d" },
+                {q: "Which planet is closest to the earth?", a: "mercury", b: "venus", c: "mars", d: "krypton", r: "b" },
+                {q: "What is 'Andromeda'?", a: "a planet", b: "a galaxy", c: "a nebulae", d: "a dog", r: "b" },
+                {q: "What does the 'e' in 'emc2' stand for?", a: "energy", b: "event", c: "excrutiating", d: "entry", r: "a" },
+                {q: "How many people have seen the backside of the moon in person?", a: "30", b: "15", c: "24", d: "0", r: "c" },
+                {q: "How far is it to the sun?", a: "1 light hour", b: "1 light day", c: "1 light second", d: "8 light minutes", r: "d" },
+                {q: "How many moons does Jupiter have?", a: "4", b: "8", c: "16", d: "79", r: "d" },
+                {q: "What year did man first land on the moon?", a: "1965", b: "1969", c: "1973", d: "never - it was a hoax", r: "b" },
+                {q: "What is thought to be at the center of our galaxy?", a: "a McDonalds", b: "a singularity", c: "a black hole", d: "a star cluster", r: "c" }
+                
               
               ]; 
 
@@ -123,19 +133,21 @@ $("#d").on("click", function(){
   var rightAnswer = arrQA[qIndex].r;
   
   $("#" + rightAnswer).addClass("right-answer"); // make this class highlight the answer
+
   sumCorrect++;
 
   if ( userAnswer === rightAnswer) {
   // right answer
   $("#feedback").text("Correct!   ----  Press any key for next question").attr("color", "green");
-  $("#qCorrect").text("Questions Right: " + sumCorrect); 
+  $("#qCorrect").text("Questions Right: " + sumCorrect + " "); 
   
-  document.onkeypress=function(e){
-    updateAndNextQuestion();
-  }
+  // document.onkeypress=function(e){
+  //   updateAndNextQuestion();
+  // }
 
   } else {
     //wrong answer
+
     sumWrong++;
 
     if(timesUp){
@@ -144,12 +156,16 @@ $("#d").on("click", function(){
       $("#feedback").text("Wrong!    ----  Press any key for next question");
     }
     
-    $("#qWrong").text("Questions Wrong: " + sumWrong);
+    $("#qWrong").text("Questions Wrong: " + sumWrong + " ");
 
-    document.onkeypress=function(e){
-      updateAndNextQuestion();
-    }
+    // document.onkeypress=function(e){
+    //   updateAndNextQuestion();
+    // }
   }
+  document.onkeypress=function(e){
+    updateAndNextQuestion();
+  }
+
 
     numQLeft--;
     $("#qLeft").text("Questions Left: " + numQLeft);
@@ -181,7 +197,8 @@ makeQuestion();
 }
 }             
 
-    function timer() {
+
+function timer() {
       
       targetTime = new Date().getTime() + gameTime * 1000;
 
@@ -199,7 +216,7 @@ makeQuestion();
           clearInterval(stopLong);
           timesUp = true;
           $("#time-left").html("0");
-          $(".feedback").text("Sorry!").attr("color", "red");
+  
       
           scoreAnswer();
         }
