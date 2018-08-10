@@ -1,20 +1,5 @@
-// You'll create a trivia game that shows only one question until the player answers it or their time runs out.
 
-
-// If the player selects the correct answer, show a screen congratulating them for choosing the right option. After a few seconds, display the next question -- do this without user input.
-
-// The scenario is similar for wrong answers and time-outs.
-
-
-// If the player runs out of time, tell the player that time's up and display the correct answer. Wait a few seconds, then show the next question.
-// If the player chooses the wrong answer, tell the player they selected the wrong option and then display the correct answer. Wait a few seconds, then show the next question.
-
-
-
-// **************************************************************
-
-// On the final screen, show the number of correct answers, incorrect answers, and an option to restart the game (without reloading the page).
-
+$(document).ready(function(){
 
 //Set up variables and arrays
 
@@ -23,19 +8,6 @@ var arrQA= [    {q: "How many moons does Mars have?" , a: "Two", b: "Three", c: 
                 {q: "What does the 'M' in 'emc2' stand for?", a: "Two", b: "Three", c: "Four", d: "It doesn't have any moons", r: "d" }
               
               ]; 
-
-// var arrQA2 = [ ["How many moons does Mars have?", "Two", "Three","Unknow", 0 ],
-//                 ["What is 'C' ?", "Color", "Careless","Light", "Cat", 2 ],
-//                 ["How many moons does Venus have?", "Two", "Three","Unknow", 0 ],
-
-
-
-
-
-// ];
-
-
-
 
 
 var numQLeft = arrQA.length; //how many questions total 
@@ -49,9 +21,9 @@ var sumWrong;
 var pctCorrect;
 var timeLeft;
 var triviaIQ;
-var gameTime = 17;  //seconds for each answer
-//var qRun = false;  // sets the ability for user to answer
+var gameTime = 10;  //seconds for each answer
 var stopLong;
+var timesUp;
 
 
 
@@ -64,21 +36,22 @@ function initialize(){
     timeLeft = 0;
     triviaIQ = 0;
     qIndex = 0;
+    timesUp = false;
     
     $("#qCorrect").text("Questions Wrong: 0");
     $("#qWrong").text("Questions Wrong: 0");
     $("#qTotal").text("Total Questions: "+ ttlQ);
     $("#qLeft").text("Questions Left: " + numQLeft);
-    
 
-    //makeQuestion();    
+    makeQuestion();    
   }
  
 
 
 
 
-    //show question
+
+  //show question
 function makeQuestion(){
 
 
@@ -89,8 +62,6 @@ function makeQuestion(){
   $("#c").text(arrQA[qIndex].c);
   $("#d").text(arrQA[qIndex].d);
 
-  //qRun = true;
-
   timer();
   getAnswer();
 
@@ -99,7 +70,6 @@ function makeQuestion(){
 
  function getAnswer() {
  
-
 //this is terribly unDRY, rewrite if time to get the data value on a class call
 
 $("#a").on("click", function(){
@@ -116,7 +86,6 @@ $("#b").on("click", function(){
   $("#b").addClass("selected-answer");
   unClickAs();
   clearInterval(stopLong);
-  $("#b").addClass("selected-answer");
   $("#time-left").empty();
   scoreAnswer();
 });
@@ -138,8 +107,6 @@ $("#d").on("click", function(){
 });
 
 
-// }
-
  }
 
 //  just keeps player from clicking after the bell
@@ -151,16 +118,12 @@ $("#d").on("click", function(){
  }
 
 
-
  function scoreAnswer() {
  
   var rightAnswer = arrQA[qIndex].r;
   
-  
-  $("#" + rightAnswer).addClass("right-answer"); // make this class ouline and highlight the answer
+  $("#" + rightAnswer).addClass("right-answer"); // make this class highlight the answer
   sumCorrect++;
-
-  //clearTimeout(scoreAnswer());
 
   if ( userAnswer === rightAnswer) {
   // right answer
@@ -174,7 +137,13 @@ $("#d").on("click", function(){
   } else {
     //wrong answer
     sumWrong++;
-    $("#feedback").text("Wrong!    ----  Press any key for next question").attr("color", "red");
+
+    if(timesUp){
+      $("#feedback").text("Times Up! ----  Press any key for next question");
+    } else {
+      $("#feedback").text("Wrong!    ----  Press any key for next question");
+    }
+    
     $("#qWrong").text("Questions Wrong: " + sumWrong);
 
     document.onkeypress=function(e){
@@ -184,19 +153,15 @@ $("#d").on("click", function(){
 
     numQLeft--;
     $("#qLeft").text("Questions Left: " + numQLeft);
-
-
 } 
 
 
 function updateAndNextQuestion() {
 
+timesUp = false;
 
 if(numQLeft > 0) {
 
-//$("scores").empty();
-
-// or
 clearTimeout(scoreAnswer());
 
 $("#a").empty().removeClass("selected-answer right-answer");
@@ -232,9 +197,7 @@ makeQuestion();
         // the count down is finished
         if (timeLeft < 1) {
           clearInterval(stopLong);
-          //question time is up
-         // qRun = false;
-          //$("#time-left").html("<h2>Times UP!</h2>");
+          timesUp = true;
           $("#time-left").html("0");
           $(".feedback").text("Sorry!").attr("color", "red");
       
@@ -244,20 +207,6 @@ makeQuestion();
       
   }
 
-      
-
-
-// for (var i = 0; i < movies.length; i++) {
-
-//   // Then dynamicaly generating buttons for each movie in the array
-//   // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
-//   var a = $("<button>");
-//   // Adding a class of movie to our button
-//   a.addClass("movie");
-//   // Adding a data-attribute
-//   a.attr("data-name", movies[i]);
-//   // Providing the initial button text
-//   a.text(movies[i]);
-//   // Adding the button to the buttons-view div
-//   $("#buttons-view").append(a);
-// }
+ initialize();
+ 
+});
