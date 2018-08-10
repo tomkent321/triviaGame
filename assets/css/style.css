@@ -1,0 +1,8 @@
+.right-answer {
+    font-weight: bolder;
+    background-color: rgb(168, 215, 199);
+}
+
+.selected-answer {
+    border: black 1px dashed;
+}

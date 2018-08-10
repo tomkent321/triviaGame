@@ -24,43 +24,56 @@ var arrQA= [    {q: "How many moons does Mars have?" , a: "Two", b: "Three", c: 
               
               ]; 
 
-var numQ;  //the number of this question (will not be the same question everytimd)
+// var arrQA2 = [ ["How many moons does Mars have?", "Two", "Three","Unknow", 0 ],
+//                 ["What is 'C' ?", "Color", "Careless","Light", "Cat", 2 ],
+//                 ["How many moons does Venus have?", "Two", "Three","Unknow", 0 ],
+
+
+
+
+
+// ];
+
+
+
+
+
 var numQLeft = arrQA.length; //how many questions total 
-var ttlQ; // total number of question user can expect
+var ttlQ = arrQA.length; // total number of question user can expect
 var qIndex = 0; //starts the game at the first question
 var qText; //used to find the question in the array not to show a number to the user 
 var userAnswer; 
-var answerGiven = false;
 var correct; 
 var sumCorrect;
+var sumWrong;
 var pctCorrect;
 var timeLeft;
 var triviaIQ;
 var gameTime = 17;  //seconds for each answer
-var qRun = false;  // sets the ability for user to answer
+//var qRun = false;  // sets the ability for user to answer
+var stopLong;
 
 
 
-function initialize(){  
-    numQ = 0;  
-    numQLeft = 0; 
-    ttlQ = 0; 
-    timerInterval = 0; 
+function initialize(){   
     userAnswer = ""; 
     correct = 0; 
     sumCorrect = 0;
+    sumWrong = 0
     pctCorrect = 0;
     timeLeft = 0;
     triviaIQ = 0;
     qIndex = 0;
-        
+    
+    $("#qCorrect").text("Questions Wrong: 0");
+    $("#qWrong").text("Questions Wrong: 0");
+    $("#qTotal").text("Total Questions: "+ ttlQ);
+    $("#qLeft").text("Questions Left: " + numQLeft);
+    
+
+    //makeQuestion();    
   }
  
-
-//set  and display UI
-
-
-// random number generator
 
 
 
@@ -68,152 +81,143 @@ function initialize(){
     //show question
 function makeQuestion(){
 
-//generate the next question
-
-
 
   $("#question").text(arrQA[qIndex].q);
+
   $("#a").text(arrQA[qIndex].a);
   $("#b").text(arrQA[qIndex].b);
   $("#c").text(arrQA[qIndex].c);
   $("#d").text(arrQA[qIndex].d);
 
-  qRun = true;
+  //qRun = true;
 
   timer();
-  //getAnswer();
+  getAnswer();
 
-  qIndex++;
 }
-
-  
-  
 
 
  function getAnswer() {
  
 
-// while (qRun == true&& answerGiven == false) {
+//this is terribly unDRY, rewrite if time to get the data value on a class call
 
 $("#a").on("click", function(){
   userAnswer = "a";
-  
-  // scoreAnswer();
+  unClickAs();
+  clearInterval(stopLong);
+  $("#a").addClass("selected-answer");
+  $("#time-left").empty();
+  scoreAnswer();
 });
 
 $("#b").on("click", function(){
   userAnswer = "b";
-  
-  // scoreAnswer();
+  unClickAs();
+  $("#b").addClass("selected-answer");
+  clearInterval(stopLong);
+  $("#time-left").empty();
+  scoreAnswer();
 });
 $("#c").on("click", function(){
   userAnswer = "c";
-  
-  // scoreAnswer();
+  unClickAs();
+  clearInterval(stopLong);
+  $("#time-left").empty();
+  scoreAnswer();
 });
 $("#d").on("click", function(){
   userAnswer = "d";
-  // answerGiven = true;
-  // scoreAnswer();
+  unClickAs();
+  clearInterval(stopLong);
+  $("#time-left").empty();
+  scoreAnswer();
 });
 
+
 // }
-clearInterval(XPathExpression);
+
  }
 
- function scoreAnswer() {
+//  just keeps player from clicking after the bell
+ function unClickAs(){
+  $("#a").unbind("click");
+  $("#b").unbind("click");
+  $("#c").unbind("click");
+  $("#d").unbind("click");
+ }
 
-  if ( userAnswer === arrQA[qIndex].r) {
-  // right answer
-  $(".feedback").text("Correct!").attr("color", "green");
+
+
+ function scoreAnswer() {
+ 
+  var rightAnswer = arrQA[qIndex].r;
+  
+  
+  $("#" + rightAnswer).addClass("right-answer"); // make this class ouline and highlight the answer
   sumCorrect++;
 
+  //clearTimeout(scoreAnswer());
+
+  if ( userAnswer === rightAnswer) {
+  // right answer
+  $("#feedback").text("Correct!   ----  Press any key for next question").attr("color", "green");
+  $("#qCorrect").text("Questions Right: " + sumCorrect); 
+  
+  document.onkeypress=function(e){
+    updateAndNextQuestion();
+  }
 
   } else {
     //wrong answer
-    $(".feedback").text("Sorry!").attr("color", "red");
+    sumWrong++;
+    $("#feedback").text("Wrong!    ----  Press any key for next question").attr("color", "red");
+    $("#qWrong").text("Questions Wrong: " + sumWrong);
 
+    document.onkeypress=function(e){
+      updateAndNextQuestion();
+    }
   }
 
-  showRightAnswer();
-numQLeft--;
+    numQLeft--;
+    $("#qLeft").text("Questions Left: " + numQLeft);
+
 
 } 
-
-function showRightAnswer() {
-
-
-
-  if(arrQA[qIndex].r == "a"){
-    $("#a").text(arrQA[qIndex].a).attr("fontWeight","bolder");
-  }else{
-    $("#a").text("                               ");
-  }
-
-  if(arrQA[qIndex].r == "b"){
-    $("#b").text(arrQA[qIndex].b).attr("fontWeight","bolder");
-  }else{
-  $("#b").text("                               ");
-  }
-
-  if(arrQA[qIndex].r == "c"){
-    $("#c").text(arrQA[qIndex].b).attr("fontWeight","bolder");
-  }else{
-  $("#c").text("                               ");
-  }
-
-  if(arrQA[qIndex].r == "d"){
-    $("#d").text(arrQA[qIndex].b).attr("fontWeight","bolder");
-  }else{
-  $("#d").text("                               ");
-  }
-
-  }
-
-
 
 
 function updateAndNextQuestion() {
 
-timerShort();
-
 
 if(numQLeft > 0) {
 
-  $("#a").text("");
-  $("#b").text("");
-  $("#c").text("");
-  $("#d").text("");
+//$("scores").empty();
 
-  
+// or
+clearTimeout(scoreAnswer());
+
+$("#a").empty().removeClass("selected-answer right-answer");
+$("#b").empty().removeClass("selected-answer right-answer");
+$("#c").empty().removeClass("selected-answer right-answer");
+$("#d").empty().removeClass("selected-answer right-answer");
+
+qIndex++;
+
+makeQuestion();
+
+
 } else {
 
-  gameOver();
+  $(".feedback").text("That's all the questions there are!");
 }
-
-  }
-
-  
-
-function gameOver() {
-
-
-
-}
-
-
-
-
-
-            
-              
+}             
 
     function timer() {
       
       targetTime = new Date().getTime() + gameTime * 1000;
 
       // Update the count down every 1 second
-      var x = setInterval(function() {
+      stopLong = setInterval(function() {
       var timeNow =  new Date().getTime(); 
       var timeLeft = targetTime - timeNow;
       var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
@@ -221,44 +225,35 @@ function gameOver() {
       if(seconds > 0){
         $("#time-left").html("<h2>" + seconds + "</h2>");
       }
-        // If the count down is finished, write some text 
+        // the count down is finished
         if (timeLeft < 1) {
-          clearInterval(x);
+          clearInterval(stopLong);
           //question time is up
-          qRun = false;
+         // qRun = false;
           //$("#time-left").html("<h2>Times UP!</h2>");
+          $("#time-left").html("<h2>0</h2>");
           $(".feedback").text("Sorry!").attr("color", "red");
-          //showRightAnswer();
+      
+          scoreAnswer();
         }
       }, 1000);
       
-      }
+  }
 
-      function timerShort() {
       
-        targetTime = new Date().getTime() + 2000;
-  
-        // Update the count down every 1 second
-        var x = setInterval(function() {
-        var timeNow =  new Date().getTime(); 
-        var timeLeft = targetTime - timeNow;
-        var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-          
-          //$("#time-left").html("<h2>" + seconds + "</h2>");
-        
-          // If the count down is finished, write some text 
-          if (timeLeft < 0) {
-            clearInterval(XPathExpression);
-            //question time is up
-            //qRun = false;
-            //$("#time-left").html("<h2>Times UP!</h2>");
-          }
-        }, 1000);
-        
-        }
 
 
+// for (var i = 0; i < movies.length; i++) {
 
-
-
-
+//   // Then dynamicaly generating buttons for each movie in the array
+//   // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+//   var a = $("<button>");
+//   // Adding a class of movie to our button
+//   a.addClass("movie");
+//   // Adding a data-attribute
+//   a.attr("data-name", movies[i]);
+//   // Providing the initial button text
+//   a.text(movies[i]);
+//   // Adding the button to the buttons-view div
+//   $("#buttons-view").append(a);
+// }
